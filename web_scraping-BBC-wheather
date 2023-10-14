@@ -1,0 +1,24 @@
+import os
+import requests               # to get the webpage
+import json                   # to convert API to json format
+from urllib.parse import urlencode #encodes the sqeuence of elements into URL query  string
+
+def getId(City):
+    City = City.lower() # convert city name to lowercase to standardize format
+    # Convert into an API call using URL encoding
+    location_url = 'https://locator-service.api.bbci.co.uk/locations?' + urlencode({
+      'api_key': 'AGbFAKx58hyjQScCXIYrxuEwJh2W2cmv',
+      's': City,
+      'stack': 'aws',
+      'locale': 'en',
+      'filter': 'international',
+      'place-types': 'settlement,airport,district',
+      'order': 'importance',
+      'a': 'true',
+      'format': 'json'
+    })
+    result = requests.get(location_url).json()
+    Id = result['response']['results']['results'][0]['id']
+    return "Id of {}: {}".format(City,Id)
+
+print(getId(input("enter the city :")))
